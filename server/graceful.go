@@ -46,6 +46,10 @@ func init() {
 
 // MyServer
 
+func ServerSetAddr(addr string) {
+	msrv.srv.Addr = addr
+}
+
 func ServerSetHandler(handler http.Handler) {
 	msrv.srv.Handler = handler
 	msrv.fHandler = true
@@ -57,6 +61,7 @@ func Run() {
 	}
 
 	go func() {
+		log.Println("listening", msrv.srv.Addr)
 		if err := msrv.srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
