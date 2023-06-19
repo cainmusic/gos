@@ -47,11 +47,11 @@ func InitDB() {
 }
 
 func InitRouter(r *gin.Engine) {
-	initRouterGlobal(r)
-	initRouterForMe(r)
+	initTimeoGlobal(r)
+	initTimeoForMe(r)
 }
 
-func initRouterGlobal(r *gin.Engine) {
+func initTimeoGlobal(r *gin.Engine) {
 	r.GET("/setoffset1day", func(c *gin.Context) {
 		timeo.SetOffset(timeo.Day)
 		c.String(200, "set offset 1 day")
@@ -66,7 +66,7 @@ func initRouterGlobal(r *gin.Engine) {
 	})
 }
 
-func initRouterForMe(r *gin.Engine) {
+func initTimeoForMe(r *gin.Engine) {
 	r.GET("/setoffset1day_forme", func(c *gin.Context) {
 		mytime := timeo.NewOffset(timeo.Day)
 		c.String(200, "set offset 1 day : " + mytime.Now().String())

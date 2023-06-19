@@ -110,3 +110,5 @@ now := pos.Now()            // time.Time
 oss := pos.GetOffset()      // int64
 fmt.Println(now, time.Duration(oss) * time.Second)  // 2023-06-23 04:54:38 +0800 CST 84h0m0s
 ```
+
+服务内示例参考test_server.go的initTimeoGlobal和initTimeoForMe
