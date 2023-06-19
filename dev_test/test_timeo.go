@@ -8,9 +8,27 @@ import (
 )
 
 func main() {
+	test0()
+	fmt.Println("===============")
 	test1()
 	fmt.Println("===============")
 	test2()
+}
+
+func test0() {
+	func() {
+		timeo.SetOffset(timeo.Day*3 + timeo.Hour*12)
+		now := timeo.Now()       // time.Time
+		oss := timeo.GetOffset() // int64
+		fmt.Println(now, time.Duration(oss)*time.Second)
+	}()
+
+	func() {
+		pos := timeo.NewOffset(timeo.Day*3 + timeo.Hour*12)
+		now := pos.Now()       // time.Time
+		oss := pos.GetOffset() // int64
+		fmt.Println(now, time.Duration(oss)*time.Second)
+	}()
 }
 
 func test1() {
