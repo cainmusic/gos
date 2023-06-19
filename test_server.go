@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/cainmusic/gos/server"
+	"github.com/cainmusic/gos/timeo"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +13,8 @@ import (
 func main() {
 	router := gin.New()
 
-	InitDB()
+	//InitDB()
+	InitRouter(router)
 
 	router.GET("/async", func(c *gin.Context) {
 		log.Println("task start")
@@ -31,6 +33,7 @@ func main() {
 	})
 
 	server.ServerSetHandler(router)
+	server.ServerSetAddr(":8080")
 	server.Run()
 }
 
@@ -40,5 +43,36 @@ func InitDB() {
 		log.Println("closing db")
 		time.Sleep(5 * time.Second)
 		log.Println("db closed")
+	})
+}
+
+func InitRouter(r *gin.Engine) {
+	initRouterGlobal(r)
+	initRouterForMe(r)
+}
+
+func initRouterGlobal(r *gin.Engine) {
+	r.GET("/setoffset1day", func(c *gin.Context) {
+		timeo.SetOffset(timeo.Day)
+		c.String(200, "set offset 1 day")
+	})
+	r.GET("/setoffset-1day", func(c *gin.Context) {
+		timeo.SetOffset(-timeo.Day)
+		c.String(200, "set offset -1 day")
+	})
+	r.GET("/gettime", func(c *gin.Context) {
+		now := timeo.Now()
+		c.String(200, now.String())
+	})
+}
+
+func initRouterForMe(r *gin.Engine) {
+	r.GET("/setoffset1day_forme", func(c *gin.Context) {
+		mytime := timeo.NewOffset(timeo.Day)
+		c.String(200, "set offset 1 day : " + mytime.Now().String())
+	})
+	r.GET("/setoffset-1day_forme", func(c *gin.Context) {
+		mytime := timeo.NewOffset(-timeo.Day)
+		c.String(200, "set offset -1 day : " + mytime.Now().String())
 	})
 }
