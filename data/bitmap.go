@@ -4,13 +4,18 @@ import (
 	"fmt"
 )
 
-var BitAnd, BitOr [64]uint64
+// 2^6=64, int64用Bitn=6
+// 2^5=32, int32用Bitn=5
+// 2^4=16, int16用Bitn=4
+// 2^3=8, int8用Bitn=3
 
 const (
-	BitLen = 64
+	Bitn   = 6
+	BitLen = 1 << Bitn
 	Bits   = BitLen - 1
-	Bitl   = 6
 )
+
+var BitAnd, BitOr [64]uint64
 
 func init() {
 	for i := 0; i < BitLen; i++ {
@@ -49,11 +54,11 @@ func (bm *BitMap) XToPos(x int64) (i, j int64) {
 	if x < 0 || x > bm.L {
 		panic("wrong x, should between [N, N+L]")
 	}
-	return x >> Bitl, x & Bits
+	return x >> Bitn, x & Bits
 }
 
 func (bm *BitMap) PosToX(i, j int64) int64 {
-	return (i << Bitl) + j + bm.N
+	return (i << Bitn) + j + bm.N
 }
 
 func (bm *BitMap) SetByPos(i, j int64) {
